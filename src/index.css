@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 220 25% 6%;
+    --foreground: 200 20% 90%;
+
+    --card: 220 20% 10%;
+    --card-foreground: 200 20% 90%;
+
+    --popover: 220 20% 10%;
+    --popover-foreground: 200 20% 90%;
+
+    --primary: 185 100% 45%;
+    --primary-foreground: 220 25% 6%;
+
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 200 20% 85%;
+
+    --muted: 220 15% 15%;
+    --muted-foreground: 215 10% 55%;
+
+    --accent: 35 100% 55%;
+    --accent-foreground: 220 25% 6%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 20%;
+    --input: 220 15% 20%;
+    --ring: 185 100% 45%;
+
+    --radius: 0.5rem;
+
+    --sim-bg: 220 25% 6%;
+    --sim-cyan: 185 100% 50%;
+    --sim-cyan-dim: 185 60% 30%;
+    --sim-amber: 35 100% 55%;
+    --sim-green: 145 70% 45%;
+    --sim-red: 0 72% 51%;
+    --sim-glass: 220 20% 12%;
+    --sim-glass-border: 220 15% 22%;
+
+    --sidebar-background: 220 20% 8%;
+    --sidebar-foreground: 200 20% 85%;
+    --sidebar-primary: 185 100% 45%;
+    --sidebar-primary-foreground: 220 25% 6%;
+    --sidebar-accent: 220 15% 15%;
+    --sidebar-accent-foreground: 200 20% 85%;
+    --sidebar-border: 220 15% 20%;
+    --sidebar-ring: 185 100% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  .sim-glass {
+    background: hsl(var(--sim-glass) / 0.85);
+    border: 1px solid hsl(var(--sim-glass-border));
+    backdrop-filter: blur(12px);
+  }
+
+  .sim-glow-cyan {
+    text-shadow: 0 0 10px hsl(var(--sim-cyan) / 0.5), 0 0 30px hsl(var(--sim-cyan) / 0.2);
+  }
+
+  .sim-glow-amber {
+    text-shadow: 0 0 10px hsl(var(--sim-amber) / 0.5), 0 0 30px hsl(var(--sim-amber) / 0.2);
+  }
+
+  .sim-border-glow {
+    box-shadow: 0 0 15px hsl(var(--sim-cyan) / 0.15), inset 0 0 15px hsl(var(--sim-cyan) / 0.05);
+  }
+
+  .sim-scanline {
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      hsl(var(--sim-cyan) / 0.03) 2px,
+      hsl(var(--sim-cyan) / 0.03) 4px
+    );
+  }
+}
