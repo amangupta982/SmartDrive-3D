@@ -7,13 +7,16 @@ import { CameraController } from './CameraController';
 import { SkyAndLighting } from './SkyAndLighting';
 import { CockpitInterior } from './CockpitInterior';
 import { PotholeDetector } from './PotholeDetector';
+import { LaneDetector } from './LaneDetector';
 import { useKeyboard } from '@/hooks/useKeyboard';
 import { useSimulationStore } from '@/stores/simulationStore';
 import { usePotholeDetectionStore } from '@/stores/potholeDetectionStore';
+import { useLaneDetectionStore } from '@/stores/laneDetectionStore';
 
 function KeyboardShortcuts() {
   const { toggleTimeOfDay, toggleHeadlights, toggleCameraView } = useSimulationStore();
   const { toggleDetection } = usePotholeDetectionStore();
+  const { toggleLaneDetection } = useLaneDetectionStore();
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -21,10 +24,11 @@ function KeyboardShortcuts() {
       if (e.key.toLowerCase() === 'l') toggleHeadlights();
       if (e.key.toLowerCase() === 'v') toggleCameraView();
       if (e.key.toLowerCase() === 'd') toggleDetection();
+      if (e.key.toLowerCase() === 'g') toggleLaneDetection();
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [toggleTimeOfDay, toggleHeadlights, toggleCameraView, toggleDetection]);
+  }, [toggleTimeOfDay, toggleHeadlights, toggleCameraView, toggleDetection, toggleLaneDetection]);
 
   return null;
 }
@@ -51,6 +55,7 @@ export function SimulationCanvas() {
       <CockpitInterior />
       <World obstacles={obstacles} />
       <PotholeDetector />
+      <LaneDetector />
       <KeyboardShortcuts />
     </Canvas>
   );
