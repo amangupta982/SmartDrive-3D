@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -73,9 +73,9 @@
 
 @layer components {
   .sim-glass {
-    background: hsl(var(--sim-glass) / 0.85);
-    border: 1px solid hsl(var(--sim-glass-border));
-    backdrop-filter: blur(12px);
+    background: hsl(var(--sim-glass) / 0.7);
+    border: 1px solid hsl(var(--sim-glass-border) / 0.7);
+    backdrop-filter: blur(16px);
   }
 
   .sim-glow-cyan {
