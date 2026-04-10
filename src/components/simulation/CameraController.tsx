@@ -23,20 +23,31 @@ export function CameraController() {
     transitionProgress.current += (targetTransition - transitionProgress.current) * Math.min(dt * 4, 1);
     const t = transitionProgress.current;
 
-    // === Third-person camera (positioned BEHIND the car) ===
-    const followDist = 10 + (speed / 150) * 4;
-    const followHeight = 5 + (speed / 150) * 2;
-    
+    // === Third-person camera — proper over-the-shoulder chase cam ===
+    //
+    // At idle:     ~12 units behind, 5 units up  → car sits prominently in lower-center
+    // At top speed: ~16 units behind, 6 units up → camera pulls back for speed drama
+    //
+    const speedNorm = Math.min(speed / 150, 1);
+
+    const followDist   = 12  + speedNorm * 4;   // 12 → 16
+    const followHeight =  5  + speedNorm * 1;   //  5 →  6
+
+    // Camera sits BEHIND the car (along +rot direction, since car faces -rot)
     const tp_targetX = carPosition[0] + Math.sin(rot) * followDist;
     const tp_targetZ = carPosition[2] + Math.cos(rot) * followDist;
     const tp_targetY = carPosition[1] + followHeight;
 
     const tp_pos = new THREE.Vector3(tp_targetX, tp_targetY, tp_targetZ);
     
-    const lookAheadDist = 18;
+    // Look-at target: slightly ahead of the car, at car roof height
+    // A shorter look-ahead keeps the car visible in the lower third of screen
+    const lookAheadDist = 6 + speedNorm * 3;   // 6 → 9
+    const lookHeight    = carPosition[1] + 1.5; // Look at car roof/windshield level
+
     const tp_lookX = carPosition[0] - Math.sin(rot) * lookAheadDist;
     const tp_lookZ = carPosition[2] - Math.cos(rot) * lookAheadDist;
-    const tp_look = new THREE.Vector3(tp_lookX, carPosition[1] + 0.5, tp_lookZ);
+    const tp_look = new THREE.Vector3(tp_lookX, lookHeight, tp_lookZ);
 
     // === First-person camera ===
     const fp_offsetX = 0.25;
@@ -58,14 +69,14 @@ export function CameraController() {
     const targetPos = new THREE.Vector3().lerpVectors(tp_pos, fp_pos, t);
     const targetLook = new THREE.Vector3().lerpVectors(tp_look, fp_look, t);
 
-    // Smoother lerp
-    const smoothFactor = cameraView === 'first-person' ? 6 : 4.5;
+    // Smoother lerp — slightly faster for TPV for better responsiveness during turns
+    const smoothFactor = cameraView === 'first-person' ? 6 : 5;
     const lerpAmount = 1 - Math.exp(-smoothFactor * dt);
     smoothPos.current.lerp(targetPos, lerpAmount);
     smoothLook.current.lerp(targetLook, lerpAmount);
 
     // Smooth shake
-    const shakeMultiplier = cameraView === 'first-person' ? 1.5 : 1;
+    const shakeMultiplier = cameraView === 'first-person' ? 1.5 : 0.7;
     const targetShakeX = shakeIntensity * shakeMultiplier * (Math.sin(Date.now() * 0.03) * 2);
     const targetShakeY = shakeIntensity * shakeMultiplier * (Math.cos(Date.now() * 0.04) * 2);
     shakeOffset.current.x += (targetShakeX - shakeOffset.current.x) * 0.3;
@@ -84,8 +95,8 @@ export function CameraController() {
     camera.position.y += shakeOffset.current.y;
     camera.lookAt(smoothLook.current);
 
-    // Adjust FOV
-    const targetFov = cameraView === 'first-person' ? 75 : 65;
+    // Adjust FOV — slightly narrower TPV FOV to zoom in on the car more
+    const targetFov = cameraView === 'first-person' ? 75 : 60;
     const cam = camera as THREE.PerspectiveCamera;
     cam.fov += (targetFov - cam.fov) * dt * 3;
     cam.updateProjectionMatrix();

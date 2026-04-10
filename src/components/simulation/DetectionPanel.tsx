@@ -40,9 +40,9 @@ export function DetectionPanel() {
   if (cameraView === 'first-person') return null;
 
   return (
-    <div className="absolute top-20 right-4 pointer-events-none" style={{ width: '280px' }}>
+    <div className="absolute top-12 right-3 pointer-events-none" style={{ width: '260px' }}>
       {/* Header */}
-      <div className="sim-glass rounded-t-lg px-4 py-2 border-b border-[hsl(var(--sim-glass-border))]">
+      <div className="rounded-t-lg px-3 py-1.5 border-b border-[hsl(var(--sim-glass-border)/0.6)]" style={{ background: 'hsl(var(--sim-glass) / 0.75)', backdropFilter: 'blur(14px)' }}>
         <div className="flex items-center gap-2">
           <div style={{
             width: '8px',
@@ -66,7 +66,7 @@ export function DetectionPanel() {
       </div>
 
       {/* Alert List */}
-      <div className="sim-glass rounded-b-lg overflow-hidden" style={{ maxHeight: '350px', overflowY: 'auto' }}>
+      <div className="rounded-b-lg overflow-hidden" style={{ maxHeight: '280px', overflowY: 'auto', background: 'hsl(var(--sim-glass) / 0.7)', backdropFilter: 'blur(14px)', border: '1px solid hsl(var(--sim-glass-border) / 0.5)', borderTop: 'none' }}>
         {detectionAlerts.length === 0 ? (
           <div className="px-4 py-6 text-center">
             <div className="font-mono text-2xl mb-2">✅</div>
